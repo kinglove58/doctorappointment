@@ -11,8 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { formFieldType } from "../form/PatientForm";
-import React from "react";
-
+import Image from "next/image";
 interface CustomProps {
   control: Control<any>;
   fieldType: formFieldType;
@@ -28,8 +27,28 @@ interface CustomProps {
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
-const RenderField = ({field, props}:{field:<any>, props:CustomProps}) => {
-  return <input type="text" placeholder="John Doe" />;
+const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
+  const { fieldType, iconSrc, iconAlt } = props;
+  switch (fieldType) {
+    case formFieldType.INPUT:
+      return (
+        <div className="flex rounded-md border border-dark-500 bg-dark-500">
+          {iconSrc && (
+            <Image
+              src={iconSrc}
+              alt={iconAlt || "icon"}
+              width={24}
+              height={24}
+            />
+          )}
+        </div>
+      );
+
+      break;
+
+    default:
+      break;
+  }
 };
 
 const CustomField = (props: CustomProps) => {
@@ -47,6 +66,7 @@ const CustomField = (props: CustomProps) => {
           )}
 
           <RenderField field={field} props={props} />
+          <FormMessage className="shad-error" />
         </FormItem>
       )}
     />
