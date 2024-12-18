@@ -41,6 +41,7 @@ const PatientForm = () => {
   }: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
 
+    console.log("Submit Button Active");
     try {
       const userData = {
         name,
@@ -50,7 +51,7 @@ const PatientForm = () => {
 
       const newUser = await createUser(userData);
 
-      if (newUser && newUser.$id) {
+      if (newUser) {
         router.push(`/patients/${newUser.$id}/register`);
       }
     } catch (error) {
@@ -64,7 +65,7 @@ const PatientForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <section className="header">
-          <h1>Hi there</h1>
+          form.handleSubmit(onSubmit) <h1>Hi there</h1>
           <p className="text-dark-700">Please schedule your appointment </p>
         </section>
         <CustomField

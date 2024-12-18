@@ -1,3 +1,5 @@
+"use server";
+
 import { ID, Query } from "node-appwrite";
 import { users } from "../appwriteconfig";
 import { parseStringify } from "../utils";
@@ -8,10 +10,11 @@ export const createUser = async (user: CreateUserParams) => {
       ID.unique(),
       user.email,
       user.phone,
-      user.name,
-      undefined
+      undefined,
+      user.name
     );
-    console.log(newUser);
+    console.log({ newUser });
+
     return parseStringify(newUser);
   } catch (error: any) {
     if (error && error?.code === 409) {
