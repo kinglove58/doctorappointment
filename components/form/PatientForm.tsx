@@ -3,13 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
 import CustomField from "../ui/CustomField";
-import { SubmitButton } from "../SubmitButton";
+import SubmitButton from "../SubmitButton";
 import { useState } from "react";
-import { userFormValidation } from "@/lib/validation";
+import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/lib/actions/patient.actions";
 
 export enum formFieldType {
   INPUT = "input",
@@ -21,10 +21,12 @@ export enum formFieldType {
   SELECT = "select",
 }
 
-const PatientForm: React.FC = () => {
+const PatientForm = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof userFormValidation>>({
-    resolver: zodResolver(userFormValidation),
+
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
       phone: "",
@@ -32,24 +34,31 @@ const PatientForm: React.FC = () => {
     },
   });
 
-  async function onSubmit({
+  const onSubmit = async ({
     name,
-    phone,
     email,
-  }: z.infer<typeof userFormValidation>) {
+    phone,
+  }: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
+
     try {
-      //   const userData = {
-      //     name,
-      //     phone,
-      //     email,
-      //   };
-      //   const user = await createUser(userData);
-      //   if (user) router.push(`/patients/${user.id}/register`);
+      const userData = {
+        name,
+        email,
+        phone,
+      };
+
+      const newUser = await createUser(userData);
+
+      if (newUser && newUser.$id) {
+        router.push(`/patients/${newUser.$id}/register`);
+      }
     } catch (error) {
       console.log(error);
     }
-  }
+
+    setIsLoading(false);
+  };
 
   return (
     <Form {...form}>
@@ -66,11 +75,11 @@ const PatientForm: React.FC = () => {
           placeholder="john Doe"
           iconAlt="user"
           iconSrc="/assets/icons/user.svg"
-        />{" "}
+        />
         <CustomField
           fieldType={formFieldType.INPUT}
           control={form.control}
-          name="Email"
+          name="email"
           label="email"
           placeholder="johndoe@gmail.com"
           iconAlt="user"
@@ -79,7 +88,7 @@ const PatientForm: React.FC = () => {
         <CustomField
           fieldType={formFieldType.PHONE_INPUT}
           control={form.control}
-          name="Phone number"
+          name="phone"
           label="phone"
           placeholder="(555) 223 556"
         />
