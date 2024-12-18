@@ -6,7 +6,10 @@ import { z } from "zod";
 import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
 import CustomField from "../ui/CustomField";
-
+import { SubmitButton } from "../SubmitButton";
+import { useState } from "react";
+import { userFormValidation } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 export enum formFieldType {
   INPUT = "input",
   SKELETON = "skeleton",
@@ -17,28 +20,34 @@ export enum formFieldType {
   SELECT = "select",
 }
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
-
-interface FormValues {
-  username: string;
-}
-
 const PatientForm: React.FC = () => {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const [isLoading, setIsLoading] = useState(false);
+  const form = useForm<z.infer<typeof userFormValidation>>({
+    resolver: zodResolver(userFormValidation),
     defaultValues: {
-      username: "",
+      name: "",
+      phone: "",
+      email: "",
     },
   });
 
-  function onSubmit(values: FormValues) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit({
+    name,
+    phone,
+    email,
+  }: z.infer<typeof userFormValidation>) {
+    setIsLoading(true);
+    try {
+      //   const userData = {
+      //     name,
+      //     phone,
+      //     email,
+      //   };
+      //   const user = await createUser(userData);
+      //   if (user) router.push(`/patients/${user.id}/register`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -56,8 +65,24 @@ const PatientForm: React.FC = () => {
           placeholder="john Doe"
           iconAlt="user"
           iconSrc="/assets/icons/user.svg"
+        />{" "}
+        <CustomField
+          fieldType={formFieldType.INPUT}
+          control={form.control}
+          name="Email"
+          label="email"
+          placeholder="johndoe@gmail.com"
+          iconAlt="user"
+          iconSrc="/assets/icons/email.svg"
         />
-        <Button type="submit">Submit</Button>
+        <CustomField
+          fieldType={formFieldType.PHONE_INPUT}
+          control={form.control}
+          name="Phone number"
+          label="phone"
+          placeholder="(555) 223 556"
+        />
+        <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
     </Form>
   );
