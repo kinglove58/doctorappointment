@@ -11,6 +11,9 @@ import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { formFieldType } from "./PatientForm";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { GenderOptions } from "@/constants";
+import { Label } from "../ui/label";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -32,7 +35,6 @@ const RegisterForm = ({ user }: { user: User }) => {
   }: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
 
-    console.log("Submit Button Active");
     try {
       const userData = {
         name,
@@ -107,7 +109,105 @@ const RegisterForm = ({ user }: { user: User }) => {
             control={form.control}
             name="gender"
             label="Gender"
-            renderSkeleton={(field) => <FormControl></FormControl>}
+            renderSkeleton={(field) => (
+              <FormControl>
+                <RadioGroup
+                  className="flex h-11 gap-6 xl:justify-between"
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  {GenderOptions.map((option, i) => (
+                    <div key={option + i} className="radio-group">
+                      <RadioGroupItem value={option} id={option} />
+                      <Label htmlFor={option} className="cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
+        </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomField
+            fieldType={formFieldType.INPUT}
+            control={form.control}
+            name="address"
+            label="Address"
+            placeholder="14 street"
+          />
+          <CustomField
+            fieldType={formFieldType.INPUT}
+            control={form.control}
+            name="occupation"
+            label="Occupation"
+            placeholder="Software engr"
+          />
+        </div>{" "}
+        {/* emergency details */}
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomField
+            fieldType={formFieldType.INPUT}
+            control={form.control}
+            name="emergency contact name"
+            label="Emergency contact name"
+            placeholder="Joshua"
+          />
+
+          <CustomField
+            fieldType={formFieldType.PHONE_INPUT}
+            control={form.control}
+            name="phone"
+            label="phone"
+            placeholder="(555) 223 556"
+          />
+        </div>
+        {/* next section info */}
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Medical Information</h2>
+          </div>
+        </section>
+        <CustomField
+          fieldType={formFieldType.INPUT}
+          control={form.control}
+          name="name"
+          label="full Name"
+          placeholder="john Doe"
+          iconAlt="user"
+          iconSrc="/assets/icons/user.svg"
+        />
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomField
+            fieldType={formFieldType.DATE_PICKER}
+            control={form.control}
+            name="birthday"
+            label="Date of Birth"
+          />
+          <CustomField
+            fieldType={formFieldType.SKELETON}
+            control={form.control}
+            name="gender"
+            label="Gender"
+            renderSkeleton={(field) => (
+              <FormControl>
+                <RadioGroup
+                  className="flex h-11 gap-6 xl:justify-between"
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  {GenderOptions.map((option, i) => (
+                    <div key={option + i} className="radio-group">
+                      <RadioGroupItem value={option} id={option} />
+                      <Label htmlFor={option} className="cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            )}
           />
         </div>
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
