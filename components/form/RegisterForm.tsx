@@ -12,8 +12,10 @@ import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { formFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { GenderOptions } from "@/constants";
+import { Doctors, GenderOptions } from "@/constants";
 import { Label } from "../ui/label";
+import Image from "next/image";
+import { SelectItem } from "../ui/select";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -150,7 +152,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           <CustomField
             fieldType={formFieldType.INPUT}
             control={form.control}
-            name="emergency contact name"
+            name="emergencyContactName"
             label="Emergency contact name"
             placeholder="Joshua"
           />
@@ -170,44 +172,61 @@ const RegisterForm = ({ user }: { user: User }) => {
           </div>
         </section>
         <CustomField
-          fieldType={formFieldType.INPUT}
+          fieldType={formFieldType.SELECT}
           control={form.control}
-          name="name"
-          label="full Name"
-          placeholder="john Doe"
-          iconAlt="user"
-          iconSrc="/assets/icons/user.svg"
-        />
+          name="primaryPhysician"
+          label="Primary Care Physician"
+          placeholder="pick a Doctor"
+        >
+          {Doctors.map((doctor, i) => (
+            <SelectItem value={doctor.name} key={doctor.name + i}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Image
+                  src={doctor.image}
+                  width={doctor.width}
+                  height={doctor.height}
+                  alt="physician"
+                  className="rounded-full border border-dark-400"
+                />
+                <p>{doctor.name}</p>
+              </div>
+            </SelectItem>
+          ))}
+        </CustomField>
+        {/* insurance details */}
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomField
-            fieldType={formFieldType.DATE_PICKER}
+            fieldType={formFieldType.INPUT}
             control={form.control}
-            name="birthday"
-            label="Date of Birth"
+            name="insuranceProvider"
+            label="Insurance Provider"
+            placeholder="ex: Bluecross"
           />
+
           <CustomField
-            fieldType={formFieldType.SKELETON}
+            fieldType={formFieldType.INPUT}
             control={form.control}
-            name="gender"
-            label="Gender"
-            renderSkeleton={(field) => (
-              <FormControl>
-                <RadioGroup
-                  className="flex h-11 gap-6 xl:justify-between"
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  {GenderOptions.map((option, i) => (
-                    <div key={option + i} className="radio-group">
-                      <RadioGroupItem value={option} id={option} />
-                      <Label htmlFor={option} className="cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            )}
+            name="insurancePolicyNumber"
+            label="Insurance Policy Number"
+            placeholder="WXC34558890"
+          />
+        </div>
+        {/* allergy textarea */}
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomField
+            fieldType={formFieldType.TEXTAREA}
+            control={form.control}
+            name="allergies"
+            label="allegies (if any)"
+            placeholder="list them here"
+          />
+
+          <CustomField
+            fieldType={formFieldType.TEXTAREA}
+            control={form.control}
+            name="currentMedication"
+            label="current medication (if any)"
+            placeholder="Ibuprone 10mg"
           />
         </div>
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
