@@ -2,7 +2,6 @@
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -133,6 +132,11 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           />
         </FormControl>
       );
+
+      case formFieldType.CHECKBOX:
+        return (
+          
+        )
     default:
       return null;
   }

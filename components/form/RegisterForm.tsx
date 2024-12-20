@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { formFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Doctors, GenderOptions } from "@/constants";
+import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
 import { Label } from "../ui/label";
 import Image from "next/image";
 import { SelectItem } from "../ui/select";
+import { FileUploader } from "../FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -255,25 +256,56 @@ const RegisterForm = ({ user }: { user: User }) => {
         <CustomField
           fieldType={formFieldType.SELECT}
           control={form.control}
-          name="primaryPhysician"
-          label="Primary Care Physician"
-          placeholder="pick a Doctor"
+          name="identificationType"
+          label="identification Type"
+          placeholder="Select your identification type"
         >
-          {Doctors.map((doctor, i) => (
-            <SelectItem value={doctor.name} key={doctor.name + i}>
-              <div className="flex cursor-pointer items-center gap-2">
-                <Image
-                  src={doctor.image}
-                  width={doctor.width}
-                  height={doctor.height}
-                  alt="physician"
-                  className="rounded-full border border-dark-400"
-                />
-                <p>{doctor.name}</p>
-              </div>
+          {IdentificationTypes.map((type) => (
+            <SelectItem value={type} key={type}>
+              {type}
             </SelectItem>
           ))}
         </CustomField>
+        <CustomField
+          fieldType={formFieldType.INPUT}
+          control={form.control}
+          name="identificationNumber"
+          label="Identification Number"
+          placeholder="ex: 14356787"
+        />
+        <CustomField
+          fieldType={formFieldType.SKELETON}
+          control={form.control}
+          name="identificationDocument"
+          label="scan document copy"
+          renderSkeleton={(field) => (
+            <FileUploader files={field.value} onChange={field.onChange} />
+          )}
+        />
+        {/* consent and privacy */}
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Consent and Privacy </h2>
+          </div>
+        </section>
+        <CustomField
+          fieldType={formFieldType.CHECKBOX}
+          control={form.control}
+          name="treatmentConsent"
+          label="I consent to receive treatment for my health condition."
+        />
+        <CustomField
+          fieldType={formFieldType.CHECKBOX}
+          control={form.control}
+          name="disclosureConsent"
+          label="I consent to the use and disclosure of my health information for treatment purposes."
+        />
+        <CustomField
+          fieldType={formFieldType.CHECKBOX}
+          control={form.control}
+          name="privacyConsent"
+          label="I acknowledge that I have reviewed and agree to the privacy policy"
+        />
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
     </Form>
