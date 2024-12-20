@@ -217,7 +217,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             fieldType={formFieldType.TEXTAREA}
             control={form.control}
             name="allergies"
-            label="allegies (if any)"
+            label="Allergies (if any)"
             placeholder="list them here"
           />
 
@@ -227,6 +227,24 @@ const RegisterForm = ({ user }: { user: User }) => {
             name="currentMedication"
             label="current medication (if any)"
             placeholder="Ibuprone 10mg"
+          />
+        </div>{" "}
+        {/*family history*/}
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomField
+            fieldType={formFieldType.TEXTAREA}
+            control={form.control}
+            name="familyMedicalHistory"
+            label="Family Medical History"
+            placeholder="any specific disease frm father or mother"
+          />
+
+          <CustomField
+            fieldType={formFieldType.TEXTAREA}
+            control={form.control}
+            name="pastMedicalHistory"
+            label="Past Medical History"
+            placeholder="any specific disease frm father or mother"
           />
         </div>
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
