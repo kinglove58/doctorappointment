@@ -247,6 +247,33 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder="any specific disease frm father or mother"
           />
         </div>
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Identification Information</h2>
+          </div>
+        </section>
+        <CustomField
+          fieldType={formFieldType.SELECT}
+          control={form.control}
+          name="primaryPhysician"
+          label="Primary Care Physician"
+          placeholder="pick a Doctor"
+        >
+          {Doctors.map((doctor, i) => (
+            <SelectItem value={doctor.name} key={doctor.name + i}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Image
+                  src={doctor.image}
+                  width={doctor.width}
+                  height={doctor.height}
+                  alt="physician"
+                  className="rounded-full border border-dark-400"
+                />
+                <p>{doctor.name}</p>
+              </div>
+            </SelectItem>
+          ))}
+        </CustomField>
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
     </Form>
