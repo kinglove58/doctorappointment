@@ -46,8 +46,14 @@ const RegisterForm = ({ user }: { user: User }) => {
       values.identificationDocument &&
       values.identificationDocument.length > 0
     ) {
-      const blobFile = new Blob([values.identificationDocument[0]], {} );
+      const blobFile = new Blob([values.identificationDocument[0]], {
+        type: values.identificationDocument[0].type,
+      });
     }
+
+    formData = new FormData();
+    formData.append("blobFile", blobFile);
+    formData.append("fileName", values.identificationDocument[0])
 
     try {
     } catch (error) {
