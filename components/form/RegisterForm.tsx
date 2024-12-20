@@ -46,7 +46,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       values.identificationDocument &&
       values.identificationDocument.length > 0
     ) {
-        
+      const blobFile = new Blob([values.identificationDocument[0]], {} );
     }
 
     try {
