@@ -29,7 +29,7 @@ const autoCommit = async () => {
     await runCommand(`git commit -m "${commitMessage}"`);
     console.log("✅ Files committed to Git.");
 
-    await runCommand("git push origin main");
+    await runCommand("git push origin master");
     console.log("🚀 Files pushed to GitHub successfully!");
   } catch (err) {
     console.error("❌ Error during Git automation:", err);
