@@ -53,7 +53,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
     formData = new FormData();
     formData.append("blobFile", blobFile);
-    formData.append("fileName", values.identificationDocument[0])
+    formData.append("fileName", values.identificationDocument[0].name);
 
     try {
     } catch (error) {
