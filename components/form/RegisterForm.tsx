@@ -9,7 +9,7 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { PatientFormValidation, UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { createUser, registerPatient } from "@/lib/actions/patient.actions";
 import { formFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
@@ -61,6 +61,8 @@ const RegisterForm = ({ user }: { user: User }) => {
         identificationDocument: formData,
         birthDate: new Date(values.birthDate),
       };
+
+      //@ts-ignore
       const patient = await registerPatient(patientData);
       if(patient) router.push(`/patients/${user.$id}/new-appointment`)
     } catch (error) {
