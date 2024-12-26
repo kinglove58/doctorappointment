@@ -12,6 +12,7 @@ import {
 } from "../appwriteconfig";
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file";
+import { GenderOptions } from "@/constants";
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -57,6 +58,7 @@ export const registerPatient = async ({
 
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
     }
+    console.log(GenderOptions);
 
     const newPatient = await databases.createDocument(
       BUCKET_ID!,
